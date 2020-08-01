@@ -1,5 +1,55 @@
 <?php
 class mainLib {
+	public function GetNewTimeAgo( $ptime )
+    {
+        $timess = time() - $ptime;
+        if( $timess < 1 )
+        {
+            return '1 second'; //
+        }
+        $datass = array( 
+                    12 * 30 * 24 * 60 * 60  =>  'year',
+                    30 * 24 * 60 * 60       =>  'month',
+                    24 * 60 * 60            =>  'day',
+                    60 * 60                 =>  'hour',
+                    60                      =>  'minute',
+                    1                       =>  'second'
+        );
+        foreach( $datass as $secs => $str )
+        {
+            $d = $timess / $secs;
+            if( $d >= 1 )
+            {
+                $r = round( $d );
+                return '' . $r . ' ' . $str . ( $r > 1 ? 's' : '' ) . '';
+            }
+        }
+	}
+	
+	public function moderLog( $level,$moder,$stars,$isdiff,$isdem,$isaut )
+{
+		include __DIR__ . "/connection.php";
+		   $two = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+		   $two->execute([':id' => $moder]);
+		$row = $two->fetch();
+		$modenm = $row['userName'];
+	
+	$main = $db->prepare("INSERT INTO moder VALUES (0,:modenm, :level, :stars, :isdiff, :isdem, :isAut )");
+	$main->execute([':modenm' => $modenm, ':level' => $level, ':stars' => $stars,':isdiff' => $isdiff,':isdem' => $isdem,':isAut' => $isaut ]);
+
+}
+public function demonLog( $level,$moder,$demon )
+{
+		include __DIR__ . "/connection.php";
+		$two = $db->prepare("SELECT userName FROM accounts WHERE accountID = :id");
+		$two->execute([':id' => $moder]);
+	 $row = $two->fetch();
+	 $modenm = $row['userName'];
+
+	 $mainm = $db->prepare("INSERT INTO demon VALUES (0,:modenm ,'12',:stars, :level");
+	 $mainm->execute([':modenm' => $modenm, ':demont' => $demon,':level' => $level]);
+}  
+ 
 	public function getAudioTrack($id) {
 		switch($id){
 			case 0:
@@ -346,7 +396,7 @@ class mainLib {
 							}
 							else
 							{
-                        					$rounded = floor($delta / 60);
+            					$rounded = floor($delta / 60);
 								return $rounded." minute".($rounded == 1 ? "" : "s");
 							}
 						}
@@ -603,35 +653,15 @@ class mainLib {
 		}
 		return false;
 	}
-	public function isCloudFlareIP($ip) {
-    	$cf_ips = array(
-	        '173.245.48.0/20',
-			'103.21.244.0/22',
-			'103.22.200.0/22',
-			'103.31.4.0/22',
-			'141.101.64.0/18',
-			'108.162.192.0/18',
-			'190.93.240.0/20',
-			'188.114.96.0/20',
-			'197.234.240.0/22',
-			'198.41.128.0/17',
-			'162.158.0.0/15',
-			'104.16.0.0/12',
-			'172.64.0.0/13',
-			'131.0.72.0/22'
-	    );
-	    foreach ($cf_ips as $cf_ip) {
-	        if (ip_in_range($ip, $cf_ip)) {
-	            return true;
-	        }
-	    }
-	    return false;
-	}
 	public function getIP(){
-		if (isset($_SERVER["HTTP_CF_CONNECTING_IP"]) && $this->isCloudFlareIP($_SERVER['REMOTE_ADDR'])) {
-  			return $_SERVER["HTTP_CF_CONNECTING_IP"];
+		if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		} else {
+			$ip = $_SERVER['REMOTE_ADDR'];
 		}
-		return $_SERVER['REMOTE_ADDR'];
+		return $ip;
 	}
 	public function checkModIPPermission($permission){
 		include __DIR__ . "/connection.php";
@@ -734,6 +764,12 @@ class mainLib {
 		
 		
 	}
+	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
+	include __DIR__ . "/connection.php";
+	$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
+        $query = $db->prepare($query);
+		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
+	}
 	public function featureLevel($accountID, $levelID, $feature){
 		include __DIR__ . "/connection.php";
 		$query = "UPDATE levels SET starFeatured=:feature, rateDate=:now WHERE levelID=:levelID";
@@ -809,10 +845,7 @@ class mainLib {
 		curl_close($ch);
 		return $size;
 	}
-	public function suggestLevel($accountID, $levelID, $difficulty, $stars, $feat, $auto, $demon){
-		include __DIR__ . "/connection.php";
-		$query = "INSERT INTO suggest (suggestBy, suggestLevelID, suggestDifficulty, suggestStars, suggestFeatured, suggestAuto, suggestDemon, timestamp) VALUES (:account, :level, :diff, :stars, :feat, :auto, :demon, :timestamp)";
-		$query = $db->prepare($query);
-		$query->execute([':account' => $accountID, ':level' => $levelID, ':diff' => $difficulty, ':stars' => $stars, ':feat' => $feat, ':auto' => $auto, ':demon' => $demon, ':timestamp' => time()]);
-	}
+	
+
+	
 }

@@ -16,22 +16,22 @@ if($accountID != "" AND $gjp != ""){
 	$GJPCheck = new GJPCheck();
 	$gjpresult = $GJPCheck->check($gjp,$accountID);
 	if($gjpresult == 1){
-		$difficulty = $gs->getDiffFromStars($stars);
-		if($gs->checkPermission($accountID, "actionRateStars")){
+		$permState = $gs->checkPermission($accountID, "actionRequestMod");
+		$permmState = $gs->checkPermission($accountID, "actionRateStars");
+		if($permmState >= 1){
+			$difficulty = $gs->getDiffFromStars($stars);
 			$gs->rateLevel($accountID, $levelID, $stars, $difficulty["diff"], $difficulty["auto"], $difficulty["demon"]);
 			$gs->featureLevel($accountID, $levelID, $feature);
 			$gs->verifyCoinsLevel($accountID, $levelID, 1);
+			$gs->moderLog($levelID,$accountID,$stars,$difficulty["diff"],$difficulty["demon"],$difficulty["auto"]);
 			echo 1;
-		}else if($gs->checkPermission($accountID, "actionSuggestRating")){
+		}else if(!$permmState and $permState >= 1){
+			$difficulty = $gs->getDiffFromStars($stars);
 			$gs->suggestLevel($accountID, $levelID, $difficulty["diff"], $stars, $feature, $difficulty["auto"], $difficulty["demon"]);
 			echo 1;
 		}else{
 			echo -1;
 		}
-	}else{
-		echo -1;
-	}
-}else{
-	echo -1;
-}
+	}else{echo -1;}
+}else{echo -1;}
 ?>

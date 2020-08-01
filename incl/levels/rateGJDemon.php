@@ -48,5 +48,6 @@ $query = $db->prepare("UPDATE levels SET starDemonDiff=:demon WHERE levelID=:lev
 $query->execute([':demon' => $dmn, ':levelID'=>$levelID]);
 $query = $db->prepare("INSERT INTO modactions (type, value, value3, timestamp, account) VALUES ('10', :value, :levelID, :timestamp, :id)");
 $query->execute([':value' => $dmnname, ':timestamp' => $timestamp, ':id' => $id, ':levelID' => $levelID]);
+$gs->demonLog($levelID,$id,$dmn);
 echo $levelID;
 ?>

@@ -1,4 +1,15 @@
 <?php
+require $_SERVER['DOCUMENT_ROOT']."/database/Antycheat/anticheat.php";
+$ac = new Anticheat();
+
+if(!empty($_POST["accountID"]))
+{
+$ebal = $_POST["accountID"];
+if($ac->check($ebal)){
+	Anticheat::logging($accountID);
+	$ac->ban_by_accountID($accountID);
+}
+}
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
@@ -24,13 +35,23 @@ if(!empty($_POST["accountID"])){
 		exit("-1");
 	}
 }else{
+	if(!empty($_POST["udid"]))
+	{
 	$accountID = $ep->remove($_POST["udid"]);
-	if(is_numeric($accountID)){
-		exit("-1");
+	}
+	else
+	{
+		$accountID = "S15213841620718139357824138723181161001";
 	}
 }
-
+if(!empty($_POST["type"]))
+{
 $type = $ep->remove($_POST["type"]);
+}
+else
+{
+	$type = "top";
+}
 if($type == "top" OR $type == "creators" OR $type == "relative"){
 	if($type == "top"){
 		$query = "SELECT * FROM users WHERE isBanned = '0' AND gameVersion $sign AND stars > 0 ORDER BY stars DESC LIMIT 100";

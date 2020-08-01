@@ -18,13 +18,34 @@ $result = $query->fetchAll();
 if($query->rowCount() == 0){
 	exit("#0:0:0");
 }
+$prequery = $db->prepare("SELECT UserPrefix FROM users WHERE userID = :userID");
+$prequery->execute([':userID' => $userID]);
+$prefixdb = $prequery->fetchColumn();
+
+$prequery = $db->prepare("SELECT extID FROM users WHERE userID = :userID");
+$prequery->execute([':userID' => $userID]);
+$extID = $prequery->fetchColumn();
+
 $countquery = $db->prepare("SELECT count(*) FROM acccomments WHERE userID = :userID");
 $countquery->execute([':userID' => $userID]);
+
+$footer = " /";
+$footerb = " /";
+
 $commentcount = $countquery->fetchColumn();
 foreach($result as &$comment1) {
+	if($prefixdb != ""){
 	if($comment1["commentID"]!=""){
-		$uploadDate = date("d/m/Y G:i", $comment1["timestamp"]);
-		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$uploadDate."~6~".$comment1["commentID"]."|";
+		$uploadDate = $gs->GetNewTimeAgo($comment1["timestamp"]);
+		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$prefixdb." ".$footer." ".$uploadDate."~6~".$comment1["commentID"]."|";
+	}
+	}
+	else
+	{
+		if($comment1["commentID"]!=""){
+		$uploadDate = $gs->GetNewTimeAgo($comment1["timestamp"]);
+		$commentstring .= "2~".$comment1["comment"]."~3~".$comment1["userID"]."~4~".$comment1["likes"]."~5~0~7~".$comment1["isSpam"]."~9~".$footerb." ".$uploadDate."~6~".$comment1["commentID"]."|";
+	}
 	}
 }
 $commentstring = substr($commentstring, 0, -1);

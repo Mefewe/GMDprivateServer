@@ -5,6 +5,40 @@ include "../lib/connection.php";
 require_once "../lib/GJPCheck.php";
 require_once "../lib/exploitPatch.php";
 require_once "../lib/mainLib.php";
+//////////
+//////////
+//////////
+////
+////
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+	$ms = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$ms = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+	$ms = $_SERVER['REMOTE_ADDR'];
+}
+
+
+$res = $db->query("SELECT COUNT(*) FROM cl WHERE IP = '$ms'");
+$total = $res->fetchColumn();
+if($total < 70)
+{
+$mysqli->query("INSERT INTO cl VALUES ('$ms')");
+}
+else
+{
+	exit("ебанат");
+}
+if($total > 60)
+{
+die();
+}
+////
+////
+//////////
+//////////
+//////////
+//////////
 $mainLib = new mainLib();
 $ep = new exploitPatch();
 //here im getting all the data

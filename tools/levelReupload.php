@@ -16,6 +16,39 @@ function chkarray($source){
 include "../incl/lib/connection.php";
 require "../incl/lib/XORCipher.php";
 $xc = new XORCipher();
+//////////
+////
+////
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+	$ms = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$ms = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+	$ms = $_SERVER['REMOTE_ADDR'];
+}
+
+$rehs = $db->prepare("SELECT COUNT(*) FROM clIP WHERE IP = :IP");
+$rehs->execute([':IP' => $ms]);
+$total = $rehs->fetchColumn();
+if($total < 40)
+{
+$lol = $db->prepare("INSERT INTO clIP VALUES (:IP)");
+$lol->execute([':IP' => $ms]);
+}
+else
+{
+	exit("dd");
+}
+ // всего записей
+if($total > 21)
+{
+	echo "Превышен лимит!";
+die();
+}
+////
+////
+//////////
+//////////
 if(!empty($_POST["levelid"])){
 	$levelID = $_POST["levelid"];
 	$levelID = preg_replace("/[^0-9]/", '', $levelID);

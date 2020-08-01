@@ -12,13 +12,13 @@ for($x = 7; $x >= 0;){
 	$query->execute([':timeBefore' => $timeBefore, ':timeAfter' => $timeAfter]);
 	switch($x){
 		case 1:
-			$identifier = $x . " day ago";
+			$identifier = $x . " День назад";
 			break;
 		case 0:
-			$identifier = "Last 24 hours";
+			$identifier = "Последние 24 часа";
 			break;
 		default:
-			$identifier = $x . " days ago";
+			$identifier = $x . " Дней назад";
 			break;
 	}
 	$chartdata[$identifier] = $query->fetchColumn();
@@ -46,9 +46,9 @@ foreach($months as &$month){
 	}
 }
 
-$dl->printPage('<p>Welcome to the CvoltonGDPS dashboard. Please choose a tool above.
-				<br>DISCLAIMER: THIS AREA IS UNDER HEAVY DEVELOPEMENT, DON\'T EXPECT MUCH STUFF TO WORK
-				<br>Legend: (N) = Not Working, (T) = Links to the legacy tool version
+$dl->printPage('<p>Привет!Вы в Dashboard.
+				<br>
+				<br>
 				<br>
 					<div class="chart-container" style="position: relative; height:30vh; width:80vw">
 						<canvas id="levelsChart"></canvas>
@@ -57,5 +57,5 @@ $dl->printPage('<p>Welcome to the CvoltonGDPS dashboard. Please choose a tool ab
 					<div class="chart-container" style="position: relative; height:30vh; width:80vw">
 						<canvas id="levelsChart2"></canvas>
 					</div>
-				</p>' . $dl->generateLineChart("levelsChart","Levels Uploaded",$chartdata) . $dl->generateLineChart("levelsChart2","Levels Uploaded",$levelsChart2), false);
+				</p>' . $dl->generateLineChart("levelsChart","Уровней выложено",$chartdata) . $dl->generateLineChart("levelsChart2","Уровней выложено за последнее время",$levelsChart2), false);
 ?>

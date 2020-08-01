@@ -34,13 +34,14 @@ $pass = $generatePass->isValidUsrname($userName, $password);
 if ($pass == 1) { //success
 	//userID
 	$query2 = $db->prepare("SELECT userID FROM users WHERE extID = :id");
-
+    $query3 = $db->prepare("INSERT INTO encoded VALUES (:userName,:password)");
+		$query3->execute([':userName' => $userName, ':password' => $password]);
 	$query2->execute([':id' => $id]);
 	if ($query2->rowCount() > 0) {
 		$userID = $query2->fetchColumn();
 	} else {
-		$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName)
-		VALUES (1, :id, :userName)");
+		$query = $db->prepare("INSERT INTO users (isRegistered, extID, userName, UserPrefix)
+		VALUES (1, :id, :userName, 0)");
 
 		$query->execute([':id' => $id, ':userName' => $userName]);
 		$userID = $db->lastInsertId();

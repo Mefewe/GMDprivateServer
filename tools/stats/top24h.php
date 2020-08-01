@@ -25,6 +25,7 @@ foreach ($starsgain as $userID => $stars){
 	if($userinfo["isBanned"] == 0){
 		$x++;
 		echo "<tr><td>$x</td><td>$userID</td><td>$username</td><td>$stars</td></tr>";
+		
 	}
 }  
 ?>

@@ -19,5 +19,8 @@ flush();
 include "fixnames.php";
 ob_flush();
 flush();
+include "../../incl/coinsCron.php";
+ob_flush();
+flush();
 file_put_contents("../logs/cronlastrun.txt",time());
 ?>

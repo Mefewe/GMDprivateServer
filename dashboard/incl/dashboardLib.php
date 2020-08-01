@@ -3,7 +3,7 @@ class dashboardLib{
 	public function printHeader($isSubdirectory = true){
 		$this->handleLangStart();
 		echo '<!DOCTYPE html>
-				<html lang="en">
+				<html lang="RU">
 					<head>
 						<meta charset="utf-8"> <!-- omg i finally dont have to bother with the xxl long html 4 charset thing -->';
 		if($isSubdirectory){
@@ -16,7 +16,7 @@ class dashboardLib{
 						<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 						<link async rel="stylesheet" href="incl/cvolton.css">
 						<link async rel="stylesheet" href="incl/font-awesome-4.7.0/css/font-awesome.min.css">
-						<title>[Beta] CvoltonGDPS Dashboard</title>
+						<title>BCC Dashboard</title>
 						<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">';
 		echo '		</head>
 				<body>';
@@ -45,10 +45,10 @@ class dashboardLib{
 		$this->printBox("<h1>Login</h1>".$content);
 	}
 	public function printLoginBoxInvalid(){
-		$this->printLoginBox("<p>Invalid username or password. <a href=''>Click here to try again.</a>");
+		$this->printLoginBox("<p>Не правильный пароль или логин. <a href=''>Click here to try again.</a>");
 	}
 	public function printLoginBoxError($content){
-		$this->printLoginBox("<p>An error has occured: $content. <a href=''>Click here to try again.</a>");
+		$this->printLoginBox("<p>Ошибка: $content. <a href=''>Click here to try again.</a>");
 	}
 	public function printNavbar($active){
 		require_once __DIR__."/../../incl/lib/mainLib.php";
@@ -76,7 +76,7 @@ class dashboardLib{
 				break;
 		}
 		echo '<nav class="navbar navbar-expand-lg navbar-dark menubar">
-			<a class="navbar-brand" href="index.php">CvoltonGDPS</a>
+			<a class="navbar-brand" href="index.php">BCC</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
@@ -92,8 +92,8 @@ class dashboardLib{
 							<i class="fa fa-folder-open" aria-hidden="true"></i> '.$this->getLocalizedString("browse").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="#">'.$this->getLocalizedString("accounts").' (N)</a>
-							<a class="dropdown-item" href="#">'.$this->getLocalizedString("levels").' (N)</a>
+							<a class="dropdown-item" href="bmw/ac.php">'.$this->getLocalizedString("accounts").'</a>
+							<a class="dropdown-item" href="bmw/level.php">'.$this->getLocalizedString("levels").'</a>
 							<a class="dropdown-item" href="stats/modActionsList.php">'.$this->getLocalizedString("modActions").'</a>
 							<a class="dropdown-item" href="stats/packTable.php">'.$this->getLocalizedString("packTable").'</a>
 							<a class="dropdown-item" href="stats/gauntletTable.php">'.$this->getLocalizedString("gauntletTable").'</a>';
@@ -123,15 +123,16 @@ class dashboardLib{
 		}else{
 			echo $browse . "</div></li>";
 		}
-		echo '		<li class="nav-item dropdown '.$reuploadActive.'">
-						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-							<i class="fa fa-upload" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
-						</a>
-						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="../tools/levelReupload.php">'.$this->getLocalizedString("levelReupload").' (T) (note: gonna be both gdps to gd and gd to gdps)</a>
-							<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songAdd").'</a>
-						</div>
-					</li>
+		echo '		
+		<li class="nav-item dropdown '.$reuploadActive.'">
+		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<i class="fa fa-upload" aria-hidden="true"></i> '.$this->getLocalizedString("reuploadSection").'
+		</a>
+		<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+			
+			<a class="dropdown-item" href="reupload/songAdd.php">'.$this->getLocalizedString("songAdd").'</a>
+		</div>
+		</li>
 					<li class="nav-item dropdown '.$statsActive.'">
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							<i class="fa fa-bar-chart" aria-hidden="true"></i> '.$this->getLocalizedString("statsSection").'
@@ -149,21 +150,9 @@ class dashboardLib{
 							<i class="fa fa-language" aria-hidden="true"></i> '.$this->getLocalizedString("language").'
 						</a>
 						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-							<a class="dropdown-item" href="lang/switchLang.php?lang=CS">Česky</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=DE">Deutsch</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EE">Eesti</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EN">English</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=EO">Esperanto</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=ES">Español</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=GR">Ελληνικά</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=HR">Hrvatski</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=IT">Italiano</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=PL">Polski</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=PT">Português</a>
+						
 							<a class="dropdown-item" href="lang/switchLang.php?lang=RU">Русский</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=TH">ภาษาไทย</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=TR">Türkçe</a>
-							<a class="dropdown-item" href="lang/switchLang.php?lang=test">translTest</a>
+						
 						</div>';
 		if(isset($_SESSION["accountID"]) AND $_SESSION["accountID"] != 0){
 			$userName = $gs->getAccountName($_SESSION["accountID"]);
