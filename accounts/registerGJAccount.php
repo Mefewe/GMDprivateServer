@@ -22,11 +22,22 @@ $accounts = $acc->fetchColumn();
 $gays = $accounts - $users;
 if($gays > 260)
 {
-  
-exit("fdfd");
+exit("Blocked Func.");
 die();
+}
+$date = date("o j m");
+$qur = $db->prepare("INSERT INTO `exec` VALUES (:datr)");
+$qur2 = $db->prepare("SELECT count(*) FROM `exec` WHERE `date` = :jata");
+$qur2->execute([':jata' => $date]);
 
-
+$count32 = $qur2->fetchColumn();
+if($maxaccs > $count32)
+{
+$qur->execute([':datr' => $date]);
+}
+else
+{
+	die("Лимит превышен!");
 }
 $ep = new exploitPatch();
 $ep->DOS($ip);

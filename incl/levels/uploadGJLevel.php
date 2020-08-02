@@ -36,6 +36,20 @@ die();
 ////
 ////
 //////////
+$date = date("o j m");
+$qur = $db->prepare("INSERT INTO `exec2` VALUES (:datr)");
+$qur2 = $db->prepare("SELECT count(*) FROM `exec2` WHERE `date` = :jata");
+$qur2->execute([':jata' => $date]);
+
+$count64 = $qur2->fetchColumn();
+if($maxlevels > $count64)
+{
+$qur->execute([':datr' => $date]);
+}
+else
+{
+	die("Лимит превышен!");
+}
 //////////
 //////////
 //////////

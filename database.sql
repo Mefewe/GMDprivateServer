@@ -96,7 +96,8 @@ CREATE TABLE `actions` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
-
+CREATE TABLE `exec` ( `date` TEXT NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `exec2` ( `date` TEXT NOT NULL ) ENGINE = InnoDB; 
 --
 -- Структура таблицы `bannedips`
 --
