@@ -98,6 +98,8 @@ CREATE TABLE `actions` (
 -- --------------------------------------------------------
 CREATE TABLE `exec` ( `date` TEXT NOT NULL ) ENGINE = InnoDB; 
 CREATE TABLE `exec2` ( `date` TEXT NOT NULL ) ENGINE = InnoDB; 
+CREATE TABLE `sonIP` ( `IP` TEXT NOT NULL ) ENGINE = InnoDB; 
+
 --
 -- Структура таблицы `bannedips`
 --

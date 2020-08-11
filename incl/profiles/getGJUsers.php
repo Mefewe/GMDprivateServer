@@ -11,6 +11,7 @@ $query = "SELECT userName, userID, coins, userCoins, icon, color1, color2, iconT
 $query = $db->prepare($query);
 $query->execute([':str' => $str]);
 $result = $query->fetchAll();
+//echo $result;
 if(count($result) < 1){
 	exit("-1");
 }

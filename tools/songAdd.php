@@ -1,10 +1,26 @@
 <?php
 //error_reporting(0);
 include "../incl/lib/connection.php";
+include "../incl/lib/mainLib.php";
+
 require_once "../incl/lib/exploitPatch.php";
 $ep = new exploitPatch();
 $api_key = "dc467dd431fc48eb0244b0aead929ccd";
 if(!empty($_POST["songlink"])){
+	$gs = new mainLib();
+$IP = $gs->getIP();
+
+$qura = $db->prepare("INSERT INTO sonIP VALUES (:ip)");
+$qura2 = $db->prepare("SELECT count(*) FROM sonIP WHERE IP = :ip");
+$qura2->execute([':ip' => $IP]);$cout = $qura2->fetchColumn();
+if($cout > $maxsongs)
+{
+	exit ("limit allah");
+}
+else
+{
+	$qura->execute([':ip' => $IP]);
+}
 $song = str_replace("www.dropbox.com","dl.dropboxusercontent.com",$_POST["songlink"]);
 if (filter_var($song, FILTER_VALIDATE_URL) == TRUE) {
 	$soundcloud = false;
