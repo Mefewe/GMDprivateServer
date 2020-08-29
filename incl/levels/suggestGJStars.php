@@ -32,6 +32,15 @@ if($accountID != "" AND $gjp != ""){
 		}else{
 			echo -2;
 		}
+<<<<<<< HEAD
 	}else{echo -2;}
 }else{echo -2;}
+=======
+	}else{
+		echo -2;
+	}
+}else{
+	echo -2;
+}
+>>>>>>> 1b5acbf5fac6d56a2b14b394134741e296000596
 ?>
