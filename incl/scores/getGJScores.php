@@ -1,5 +1,5 @@
 <?php
-require $_SERVER['DOCUMENT_ROOT']."/database/Antycheat/anticheat.php";
+require "../../Antycheat/anticheat.php";
 $ac = new Anticheat();
 
 if(!empty($_POST["accountID"]))
