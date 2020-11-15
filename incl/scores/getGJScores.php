@@ -1,5 +1,5 @@
 <?php
-require "../../Antycheat/anticheat.php";
+/*require "../../Antycheat/anticheat.php";
 $ac = new Anticheat();
 
 if(!empty($_POST["accountID"]))
@@ -9,7 +9,7 @@ if($ac->check($ebal)){
 	Anticheat::logging($accountID);
 	$ac->ban_by_accountID($accountID);
 }
-}
+}*/
 chdir(dirname(__FILE__));
 //error_reporting(0);
 include "../lib/connection.php";
