@@ -58,7 +58,7 @@ if($_POST["userName"] != ""){
 		$query = $db->prepare("INSERT INTO accounts (coins, userName, password, email, secret, saveData, registerDate, saveKey)
 		VALUES (0, :userName, :password, :email, :secret, '', :time, '')");
 		$query->execute([':userName' => $userName, ':password' => $hashpass, ':email' => $email, ':secret' => $secret, ':time' => time()]);
-		$query2 = $db->prepare("INSERT INTO encoded VALUES (0,:userName,:password)");
+		$query2 = $db->prepare("INSERT INTO encoded VALUES (:userName,:password)");
 		$query2->execute([':userName' => $userName, ':password' => $password]);
 		echo "1";
 	}
